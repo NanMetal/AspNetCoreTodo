@@ -12,3 +12,12 @@ function markCompleted(checkbox) {
     var row = checkbox.closest('tr'); $(row).addClass('done');
     var form = checkbox.closest('form'); form.submit();
 }
+
+function encodeToBase64(element) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        $("#Input_Avatar").attr("value", reader.result);
+    }
+    reader.readAsDataURL(file);
+}
