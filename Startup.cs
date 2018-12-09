@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AspNetCoreTodo.Data;
+using AspNetCoreTodo.Models;
+using AspNetCoreTodo.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AspNetCoreTodo.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AspNetCoreTodo.Services;
-using AspNetCoreTodo.Models;
 
 namespace AspNetCoreTodo
 {
@@ -37,7 +32,7 @@ namespace AspNetCoreTodo
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
+                options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -45,8 +40,10 @@ namespace AspNetCoreTodo
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
         }
 

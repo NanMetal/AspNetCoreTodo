@@ -13,5 +13,6 @@ namespace AspNetCoreTodo.Data
 
         public DbSet<TodoItem> Items { get; set; }
 
+        public DbSet<Avatar> Avatars { get; set; }
     }
 }

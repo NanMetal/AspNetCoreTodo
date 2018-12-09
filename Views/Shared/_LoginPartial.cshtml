@@ -1,14 +1,23 @@
-@using Microsoft.AspNetCore.Identity
+@using	Microsoft.AspNetCore.Identity
+@using	AspNetCoreTodo.Models
+@using AspNetCoreTodo.Services
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@inject IUserService userService
 
-@if (SignInManager.IsSignedIn(User))
+@if (signInManager.IsSignedIn(User))
 {
+    var currentUser = await userManager.GetUserAsync(User);
+    var avatar = await userService.GetAvatarAsync(currentUser);
     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    <img src="@avatar.Base64" style="width: 24px;height: 24px; margin-top: -5px; margin-right: 5px; border-radius: 50%;" />
+                    @currentUser.UserName!
+                </a>
             </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
